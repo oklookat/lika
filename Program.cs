@@ -43,7 +43,7 @@ class Program
         }
 
         // Hello.
-        Render.Str("lika v1.0");
+        Render.Str("lika v1.0.1");
         Render.Str("> https://github.com/oklookat/lika");
         Render.Str("> https://www.donationalerts.com/r/oklookat");
         Render.Str("> https://boosty.to/oklookat/donate");

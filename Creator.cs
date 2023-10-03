@@ -38,7 +38,7 @@ namespace lika
                 {
                     if (!File.Exists(link.Src))
                     {
-                        if(!install)
+                        if (!install)
                         {
                             throw new Exception("Not exists: " + link.Src);
                         }
@@ -69,7 +69,10 @@ namespace lika
                     }
                     else
                     {
-                        Directory.Delete(link.Target);
+                        if (Directory.Exists(link.Target))
+                        {
+                            Directory.Delete(link.Target, true);
+                        }
                     }
                     continue;
                 }
@@ -100,9 +103,9 @@ namespace lika
                     }
                     else
                     {
-                        if(Directory.Exists(target))
+                        if (Directory.Exists(target))
                         {
-                            Directory.Delete(target);
+                            Directory.Delete(target, true);
                         }
                     }
                 }
@@ -116,7 +119,8 @@ namespace lika
                     }
                     else
                     {
-                        if (File.Exists(target)) {
+                        if (File.Exists(target))
+                        {
                             File.Delete(target);
                         }
                     }
