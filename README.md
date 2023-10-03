@@ -65,14 +65,14 @@ This file is also used to delete symlinks. In short: replace bat's with lika.exe
 
 ## Variables
 
-- lika.exe dir: "<CWD>"
-- System dir: "<SystemDir>"
-- Current user documents: "<UserDocuments>"
-- Public documents: "<PublicDocuments>"
-- Program files: "<ProgramFiles>"
-- Program files (x86): "<ProgramFiles86>"
-- Common program files: "<CommonProgramFiles>"
-- Current user dir: "<CurrentUser>"
+- lika.exe dir: \<CWD>
+- System dir: \<SystemDir>
+- Current user documents: \<UserDocuments>
+- Public documents: \<PublicDocuments>
+- Program files: \<ProgramFiles>
+- Program files (x86): \<ProgramFiles86>
+- Common program files: \<CommonProgramFiles>
+- Current user dir: \<CurrentUser>
 
 # Requirements
 
