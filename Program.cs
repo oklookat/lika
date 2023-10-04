@@ -1,6 +1,5 @@
 ﻿using lika;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 
 class Program
 {
@@ -10,37 +9,37 @@ class Program
         System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
         System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
         string version = fvi.FileVersion ?? "???";
-        Render.Str("lika v" + version);
-        Render.Str("> https://github.com/oklookat/lika");
-        Render.Str("> https://www.donationalerts.com/r/oklookat");
-        Render.Str("> https://boosty.to/oklookat/donate");
-        Render.Str("========\n");
+        Render.StrWhiteBlack("lika symlink installer v" + version);
+        Render.StrWhiteBlack("> https://github.com/oklookat/lika");
+        Render.StrWhiteBlack("> https://www.donationalerts.com/r/oklookat");
+        Render.StrWhiteBlack("> https://boosty.to/oklookat/donate");
+        Render.Str("");
 
         // Check OS.
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Render.Str("Windows only.");
+            Render.Err("Windows only.");
             Render.Idle();
             return;
         }
 
-        var filePath = "installer.json";
+        var installerPath = "installer.json";
 
-        if (!File.Exists(filePath))
+        if (!File.Exists(installerPath))
         {
-            Render.Err($"{filePath} not found");
+            Render.Err($"{installerPath} not found");
             Render.Idle();
             return;
         }
 
         // Decode.
-        lika.Format.Data? decoded;
+        lika.Installer.Data? decoded;
         try
         {
-            decoded = lika.Format.Decoder.Decode(filePath);
+            decoded = lika.Installer.Decode(installerPath);
             if (decoded == null)
             {
-                Render.Err("invalid JSON file (?)");
+                Render.Err("decoded == null (wtf)");
                 Render.Idle();
                 return;
             }
@@ -55,22 +54,22 @@ class Program
         // Hello from installer.
         if (decoded.InstallerName != null)
         {
-            Render.Str($"> Installer: {decoded.InstallerName}");
+            Render.StrWhiteBlack($"> Installer: {decoded.InstallerName}");
         }
         if (decoded.Author != null)
         {
-            Render.Str($"> Author: {decoded.Author}");
+            Render.StrWhiteBlack($"> Author: {decoded.Author}");
         }
         if (decoded.AuthorUrl != null)
         {
-            Render.Str($"> Author URL: {decoded.AuthorUrl}");
+            Render.StrWhiteBlack($"> Author URL: {decoded.AuthorUrl}");
         }
-        Render.Str("\n");
+        Render.Str("");
+        Render.Str("1. Install\n2. Uninstall\n");
 
         // Choose.
         while (true)
         {
-            Render.Str("Enter a digit:\n1. Install\n2. Uninstall\n");
             var pressed = Console.ReadKey(true);
             var chard = pressed.KeyChar;
             try
@@ -86,7 +85,6 @@ class Program
                     lika.Creator.Installer(decoded, false);
                 } else
                 {
-                    Render.Str("Type '1' or '2'.");
                     continue;  
                 }
                 Render.Str("Done.");

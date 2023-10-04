@@ -6,26 +6,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static lika.Format;
+using static lika.Installer;
 
 namespace lika
 {
     internal static class Creator
     {
-        public static void Installer(Format.Data src, bool install = true)
+        public static void Installer(Data src, bool install = true)
         {
-            // Create dirs.
-            if (!install && src.Create != null)
-            {
-                foreach (var path in src.Create)
-                {
-                    if (path.Length > 0)
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                }
-            }
-
             // Create links.
             var counter = 0;
             foreach (var link in src.Links)
@@ -33,8 +21,16 @@ namespace lika
                 counter++;
                 Render.Str($"Current link: {link.Src} => {link.Target}");
 
-                // File.
-                if (!IsDirectory(link.Src))
+                // Create parent dirs if needed.
+                var parentPath = Directory.GetParent(link.Target)?.FullName;
+                if(parentPath != null)
+                {
+                    Directory.CreateDirectory(parentPath);
+                }
+   
+
+                // Source = file.
+                if (!Utils.IsDirectory(link.Src))
                 {
                     if (!File.Exists(link.Src))
                     {
@@ -52,7 +48,7 @@ namespace lika
                     continue;
                 }
 
-                // Dir.
+                // Source = dir.
                 if (!Directory.Exists(link.Src))
                 {
                     if (!install)
@@ -67,12 +63,9 @@ namespace lika
                     {
                         Directory.CreateSymbolicLink(link.Target, link.Src);
                     }
-                    else
+                    else if (Directory.Exists(link.Target))
                     {
-                        if (Directory.Exists(link.Target))
-                        {
-                            Directory.Delete(link.Target, true);
-                        }
+                        Directory.Delete(link.Target, true);
                     }
                     continue;
                 }
@@ -88,12 +81,11 @@ namespace lika
                         continue;
                     }
 
-                    if (link.DirContentsExcept != null && link.DirContentsExcept.Length > 0)
+                    // Skip 'except' dir.
+                    if (link.DirContentsExcept != null &&
+                        link.DirContentsExcept.Length > 0 && link.DirContentsExcept.Contains(subDirName))
                     {
-                        if (link.DirContentsExcept.Contains(subDirName))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
 
                     var target = link.Target + "\\" + subDirName;
@@ -101,12 +93,9 @@ namespace lika
                     {
                         Directory.CreateSymbolicLink(target, subDirPath);
                     }
-                    else
+                    else if (Directory.Exists(target))
                     {
-                        if (Directory.Exists(target))
-                        {
-                            Directory.Delete(target, true);
-                        }
+                        Directory.Delete(target, true);
                     }
                 }
                 foreach (var subFilePath in subFiles)
@@ -117,12 +106,9 @@ namespace lika
                     {
                         File.CreateSymbolicLink(target, subFilePath);
                     }
-                    else
+                    else if (File.Exists(target))
                     {
-                        if (File.Exists(target))
-                        {
-                            File.Delete(target);
-                        }
+                        File.Delete(target);
                     }
                 }
             }
@@ -132,27 +118,13 @@ namespace lika
             {
                 if (install && src.Reg.Install != null)
                 {
-                    ExecRegedit(src.Reg.Install);
+                    Utils.ExecRegedit(src.Reg.Install);
                 }
                 else if (!install && src.Reg.Uninstall != null)
                 {
-                    ExecRegedit(src.Reg.Uninstall);
+                    Utils.ExecRegedit(src.Reg.Uninstall);
                 }
             }
-        }
-
-        private static bool IsDirectory(string path)
-        {
-            var attr = File.GetAttributes(path);
-            return attr.HasFlag(FileAttributes.Directory);
-        }
-
-        private static void ExecRegedit(string path)
-        {
-            string[] exec = { "regedit.exe", $"\"{path}\"" };
-            Render.Str($"Exec: {String.Join(' ', exec)}");
-            Process regeditProcess = Process.Start(exec[0], exec[1]);
-            regeditProcess.WaitForExit();
         }
     }
 }
