@@ -1,6 +1,6 @@
 # lika
 
-**attention: this program tested on one plugin only**
+**attention: this program tested on 2 plugins only**
 
 If you use VST plugins, you probably know about their symlink versions. It's a very handy thing, isn't it? 
 And if you have created such versions, here's a question: aren't you tired of writing cmd or bat files? The question is rhetorical.
@@ -14,7 +14,7 @@ This file is also used to delete symlinks. In short: replace bat's with lika.exe
 
 **tip: remove comments if you will use this example**
 
-```json
+```javascript
 {
   "installerName": "Massive X", // optional
   "author": "TotallyLegitimateSoftwareUser", // optional
@@ -72,6 +72,7 @@ This file is also used to delete symlinks. In short: replace bat's with lika.exe
 - Program files: \<ProgramFiles>
 - Program files (x86): \<ProgramFiles86>
 - Common program files: \<CommonProgramFiles>
+- CommonProgramFiles86: \<CommonProgramFiles86>
 - Current user dir: \<CurrentUser>
 
 # Requirements

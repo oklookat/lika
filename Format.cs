@@ -112,6 +112,7 @@ namespace lika
             public static readonly string ProgramFiles = "<ProgramFiles>";
             public static readonly string ProgramFiles86 = "<ProgramFiles86>";
             public static readonly string CommonProgramFiles = "<CommonProgramFiles>";
+            public static readonly string CommonProgramFiles86 = "<CommonProgramFiles86>";
             public static readonly string CurrentUser = "<CurrentUser>";
 
             public static string Decode(string source)
@@ -123,6 +124,7 @@ namespace lika
                 result = result.Replace(ProgramFiles, Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
                 result = result.Replace(ProgramFiles86, Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
                 result = result.Replace(CommonProgramFiles, Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles));
+                result = result.Replace(CommonProgramFiles86, Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86));
                 result = result.Replace(CurrentUser, Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
 
                 // Normalize.

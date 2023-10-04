@@ -6,6 +6,16 @@ class Program
 {
     static void Main()
     {
+        // Hello.
+        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+        string version = fvi.FileVersion ?? "???";
+        Render.Str("lika v" + version);
+        Render.Str("> https://github.com/oklookat/lika");
+        Render.Str("> https://www.donationalerts.com/r/oklookat");
+        Render.Str("> https://boosty.to/oklookat/donate");
+        Render.Str("========\n");
+
         // Check OS.
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -42,13 +52,7 @@ class Program
             return;
         }
 
-        // Hello.
-        Render.Str("lika v1.0.1");
-        Render.Str("> https://github.com/oklookat/lika");
-        Render.Str("> https://www.donationalerts.com/r/oklookat");
-        Render.Str("> https://boosty.to/oklookat/donate");
-        Render.Str("========\n");
-
+        // Hello from installer.
         if (decoded.InstallerName != null)
         {
             Render.Str($"> Installer: {decoded.InstallerName}");
