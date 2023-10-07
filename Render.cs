@@ -32,6 +32,11 @@ namespace lika
             Str(err, ConsoleColor.DarkRed, ConsoleColor.White);
         }
 
+        public static void Info(string str)
+        {
+            Str(str, ConsoleColor.Black, ConsoleColor.Green);
+        }
+
         public static void Idle()
         {
             Str("Press any key to exit.");

@@ -125,6 +125,19 @@ namespace lika
                     Utils.ExecRegedit(src.Reg.Uninstall);
                 }
             }
+
+            // Process.
+            if (src.Process != null)
+            {
+                if (install && src.Process.Install != null)
+                {
+                    Utils.RunProcess(src.Process.Install);
+                }
+                else if (!install && src.Process.Uninstall != null)
+                {
+                    Utils.RunProcess(src.Process.Uninstall);
+                }
+            }
         }
     }
 }

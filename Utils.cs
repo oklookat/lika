@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static lika.Installer;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace lika
 {
@@ -37,9 +39,43 @@ namespace lika
         public static void ExecRegedit(string path)
         {
             string[] exec = { "regedit.exe", $"\"{path}\"" };
-            Render.Str($"Exec: {String.Join(' ', exec)}");
-            Process regeditProcess = Process.Start(exec[0], exec[1]);
+            Render.Info($"ExecRegedit: {String.Join(' ', exec)}");
+            var regeditProcess = System.Diagnostics.Process.Start(exec[0], exec[1]);
             regeditProcess.WaitForExit();
+        }
+
+        public static void RunProcess(string path)
+        {
+            Render.Info($"RunProcess: {String.Join(' ', path)}");
+
+            var procInfo = new ProcessStartInfo(path)
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                WorkingDirectory = Variables.CWD,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+        };
+    
+            var proc = System.Diagnostics.Process.Start(procInfo);
+            if(proc == null)
+            {
+                return;
+            }
+            proc.WaitForExit();
+
+            var procOut = proc.StandardOutput.ReadToEnd();
+            var procErr = proc.StandardError.ReadToEnd();
+            Render.Info(String.IsNullOrEmpty(procOut) ? "no stdout" : procOut);
+            
+            var exitCode = proc.ExitCode;
+            if(exitCode != 0)
+            {
+                Render.Err("exit code: " + exitCode.ToString());
+                Render.Err(String.IsNullOrEmpty(procOut) ? "no stderr" : procErr);
+            }
+
+            Render.Info("RunProcess done.");
         }
 
         // Creates temp file. Returns path to file.

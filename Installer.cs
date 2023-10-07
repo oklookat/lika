@@ -55,6 +55,19 @@ namespace lika
                 }
             }
 
+            // Process.
+            if (data.Process != null)
+            {
+                if (data.Process.Install != null)
+                {
+                    data.Process.Install = Utils.Variables.Decode(data.Process.Install);
+                }
+                if (data.Process.Uninstall != null)
+                {
+                    data.Process.Uninstall = Utils.Variables.Decode(data.Process.Uninstall);
+                }
+            }
+
             return data;
         }
 
@@ -69,6 +82,9 @@ namespace lika
 
             // Run reg file.
             public Reg? Reg { get; set; }
+
+            // Run executable file.
+            public Process? Process { get; set; }
         }
 
         public class Link
@@ -108,6 +124,12 @@ namespace lika
             public string? Install { get; set; }
 
             public bool? UninstallWithVars { get; set; } = false;
+            public string? Uninstall { get; set; }
+        }
+
+        public class Process
+        {
+            public string? Install { get; set; }
             public string? Uninstall { get; set; }
         }
     }
