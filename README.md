@@ -41,9 +41,10 @@ installer.json:
             see https://github.com/oklookat/lika/blob/8fdaf8d2d22749e9d9fca1a68b380b9f8bc59d10/Utils.cs#L156
             */
             "src": "",
-            // path to target, required
+            // required, path to target, directories will be created if they do not exist
+            // deleting links (while uninstall) will delete the specific link(s). Empty directories before it will not be deleted
             "target": "",
-            // if true and src is dir, make symlinks to all dir contents, not to dir
+            // if true and src is dir, symlinks will be created not to the directory itself, but to all content in it (not recursively)
             "dirContents": false, // optional, default false
             // if dirContents enabled, skip dirs/files names
             "dirContentsExcept": [] // optional
@@ -72,7 +73,7 @@ installer.json:
 
     // run process, optional
     "process": {
-        // path to file that will be executed after installing
+        // path to file that will be executed after installing (example: .cmd or .exe file)
         "install": "", // optional
         "uninstall": "" // optional
     }
