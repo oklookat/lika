@@ -1,0 +1,57 @@
+{
+    "installerName": "", // optional
+    "author": "", // optional
+    "authorUrl": "", // optional
+
+    // *all paths can be relative
+
+    "links": [
+        {
+            // path to source file/dir
+            /* 
+            You can choose not to specify src, and only specify target if your installer structure is similar to the Windows directory structure.
+
+            Example target: "<CommonProgramFiles>/VST3/lol.vst3"
+            If no src is specified, then the path of your src should be like this (relative to the folder where lika.exe is located):
+            "C/Program Files/Common Files/VST3/lol.vst3"
+
+            Another example target: "<PublicDocuments>/lolDir"
+            Expected: "C/Users/Public/Documents/lolDir"
+            */
+            "src": "",
+            // path to target
+            "target": "",
+            // if true and src is dir, make symlinks to all dir contents, not to dir
+            "dirContents": false, // optional, default false
+            // if dirContents enabled, skip dirs/files names
+            "dirContentsExcept": [] // optional
+        }
+    ],
+
+    // registry, optional
+    "reg": {
+        // use env vars in reg file?
+        /* Vars example:
+        [HKEY_LOCAL_MACHINE\software\WOW6432Node\Test]
+        "KeyWithVars"="<CommonProgramFiles86>\\Dir"
+        */
+        // use variables with caution, in case the registry value contains non-standard/bad paths, 
+        // there may be unexpected results because of variables (I wrote a simple parser, so yeah)
+        "installWithVars": false, // optional, default false
+
+        // path to registry file that will be executed after installing
+        // tip: if you using vars, rename .reg file to .regx or something like this
+        // so you don't forget it's an unusual .reg file.
+        "install": "", // optional
+
+        "uninstallWithVars": false, // optional, default false
+        "uninstall": "" // optional
+    },
+
+    // run process, optional
+    "process": {
+        // path to file that will be executed after installing
+        "install": "", // optional
+        "uninstall": "" // optional
+    }
+}
