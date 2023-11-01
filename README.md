@@ -37,6 +37,8 @@ installer.json:
 
             Another example target: "<PublicDocuments>/lolDir"
             Expected: "C/Users/Public/Documents/lolDir"
+
+            see https://github.com/oklookat/lika/blob/8fdaf8d2d22749e9d9fca1a68b380b9f8bc59d10/Utils.cs#L156
             */
             "src": "",
             // path to target, required
